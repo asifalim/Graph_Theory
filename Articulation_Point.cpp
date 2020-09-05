@@ -16,7 +16,7 @@ void dfs(int n,int par)
         {
             dfs(i,n);
             child++;
-            out[n]=min(out[n],in[i]);
+            out[n]=min(out[n],out[i]);
             if(out[i]>=in[n] and par!=-1)st.insert(n);
         }
     }
