@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long int
 vector<pair<ll,ll>>adj[10001];
-vector<ll>dis;
+vector<ll>dis,vis;
 void ans(ll n)
 {
     priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>>pq;
@@ -13,6 +13,7 @@ void ans(ll n)
         int node=pq.top().second;
         int node_dis=pq.top().first;
         pq.pop();
+        if(vis[node])continue;vis[node]=1;  //make faster
         for(pair<ll,ll>edge:adj[node])
         {
             if(node_dis+edge.second<dis[edge.first])
@@ -32,6 +33,7 @@ int main()
         ll t,n,a,b,w,i,j,c,d;
         cin>>t>>n;
         dis.assign(t+1,1999999999);
+        vis.assign(t+1,0);
         memset(adj,0,sizeof(adj));
         for(i=0; i<n; i++)
         {
