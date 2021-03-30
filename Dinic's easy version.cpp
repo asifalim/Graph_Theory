@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include<bits/stdc++.h>        //Practice problem can be found in cses and e-olymp or another...
 using namespace std;
 #define fast ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 #define ll long long int
@@ -66,7 +66,7 @@ signed main()
     string s,ss,sr;
     bool f=false,ff=false;
     cin>>n>>m;
-    for(i=1; i<=m; i++)cin>>a>>b>>c,cap[a][b]+=c,cap[b][a]+=c;
+    for(i=1; i<=m; i++)cin>>a>>b>>c,cap[a][b]+=c,cap[b][a]+=c;   // for directed graph no need to add cap[b][a]+=c;
     cout<<dinic(1,n)<<endl;
     //}
     return 0;
