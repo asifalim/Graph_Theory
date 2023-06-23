@@ -1,39 +1,69 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int N=1e5+5;        //O(nlogn)
-int par[N],sub[N],nn;    //This algorithm makes n height tree in logn hieght
-set<int>ar[N];
+#define fast ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+#define dbg(a,b,c,d) cerr<<a<<"  "<<b<<"  "<<c<<"  "<<d<<endl;
+#define kill(a) {cout<<a<<endl;continue;}
+#define KILL(a) {cout<<a<<endl;return 0;}
+#define debug cerr<<"Error Found"<<endl;
+#define mem(a,b) memset(a,b,sizeof(a))
+#define lcm(a, b) (a/__gcd(a,b))*b
+#define w(t) cin>>t;while(t--)
+#define pi  2 * acos(0.0)
+#define ll long long int
+#define endl "\n"
+#define INF (1LL<<61)
+int t,cs=0;
+const int mxn=1e5+5,mod=1e9+7;
+set<int>adj[mxn];
+int sub[mxn];
+int par[mxn];
+int sz;                              //This algo makes n height tree into logn height
 void dfs1(int n,int p)
 {
     sub[n]=1;
-    nn++;
-    for(auto i:ar[n])
-    if(i!=p)
-    dfs1(i,n),sub[n]+=sub[i];
+    sz++;
+    for(auto i:adj[n])
+    {
+        if(i^p)
+        {
+            dfs1(i,n);
+            sub[n]+=sub[i];
+        }
+    }
 }
 int dfs2(int n,int p)
 {
-    for(auto i:ar[n])
-    if(i!=p and sub[i]>nn/2)return dfs2(i,n);
+    for(auto i:adj[n])
+    {
+        if(i^p)
+        {
+            if(sub[i]>sz/2)return dfs2(i,n);
+        }
+    }
     return n;
 }
-void decompos(int n,int p)
+int root;
+void decompose(int n,int p)
 {
-    nn=0;
-    dfs1(n,n);
-    int centroid=dfs2(n,n);
-    if(p==-1)p=centroid;
-    par[centroid]=p;
-    for(auto i:ar[centroid])
-    ar[i].erase(centroid),decompos(i,centroid);
-    ar[centroid].clear();
+   sz=0;
+   dfs1(n,n);
+   int center=dfs2(n,n);
+   if(p==-1)p=center,root=center;
+   par[center]=p;
+   for(auto i:adj[center])
+   {
+       adj[i].erase(center);
+       decompose(i,center);
+   }
+   adj[center].clear();
 }
-int main()
+int32_t main()
 {
-    int n,m,i,j,a,b;
-    cin>>n;
-    for(i=1;i<n;i++)cin>>a>>b,ar[a].insert(b),ar[b].insert(a);
-    decompos(1,-1);
-    for(i=1;i<=n;i++)cout<<par[i]<<" ";
-    return 0;
+   fast;
+   int n;
+   cin>>n;
+   for(int i=1,a,b;i<n;i++)cin>>a>>b,adj[a].insert(b),adj[b].insert(a);
+   decompose(1,-1);
+   for(int i=1;i<=n;i++)adj[i].insert(par[i]),adj[par[i]].insert(i);
 }
+
